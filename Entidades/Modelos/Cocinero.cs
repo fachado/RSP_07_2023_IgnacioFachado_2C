@@ -9,7 +9,7 @@ namespace Entidades.Modelos
 
     public class Cocinero<T> where T : IComestible, new()
     {
-        public delegate void DelegadoPedidoEnCurso(T pedido);
+        public delegate void DelegadoPedidoEnCurso(IComestible menu);
         public delegate void DelegadoDemoraAtencion(double demora);
 
         public event DelegadoPedidoEnCurso OnPedido;
