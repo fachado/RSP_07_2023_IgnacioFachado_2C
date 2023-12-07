@@ -39,9 +39,7 @@ namespace Entidades.Modelos
         {
             get
             {
-                return this.tarea is not null && (this.tarea.Status == TaskStatus.Running ||
-                                                  this.tarea.Status == TaskStatus.WaitingToRun ||
-                                                  this.tarea.Status == TaskStatus.WaitingForActivation);
+                return this.tarea is not null && (this.tarea.Status == TaskStatus.Running ||  this.tarea.Status == TaskStatus.WaitingToRun || this.tarea.Status == TaskStatus.WaitingForActivation);
             }
             set
             {
