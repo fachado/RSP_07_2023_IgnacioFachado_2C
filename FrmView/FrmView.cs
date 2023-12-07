@@ -27,8 +27,6 @@ namespace FrmView
         {
             if (this.InvokeRequired)
             {
-                // Si no estamos en el hilo de la interfaz de usuario principal,
-                // invocamos el método en ese hilo.
                 this.Invoke(new Action(() => MostrarComida(comida)));
             }
             else
@@ -49,8 +47,7 @@ namespace FrmView
 
             if (this.InvokeRequired)
             {
-                // Si no estamos en el hilo de la interfaz de usuario principal,
-                // invocamos el método en ese hilo.
+
                 this.Invoke(new Action(() => MostrarConteo(tiempo)));
             }
             else
@@ -99,7 +96,8 @@ namespace FrmView
 
         private void FrmView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileManager.Serializar<Cocinero<Hamburguesa>>(hamburguesero, "HamburgueseroSerializado.txt");
+            //Alumno: Serializar el cocinero antes de cerrar el formulario
+            FileManager.Serializar(hamburguesero, "HamburgueseroSerializado.txt");
 
         }
     }

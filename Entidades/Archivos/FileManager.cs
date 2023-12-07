@@ -25,9 +25,7 @@ namespace Entidades.Files
             }
             catch (Exception ex)
             {
-                // Utiliza el método Guardar para escribir en el archivo logs.txt
                 Guardar($"Error al crear el directorio: {ex.Message}", "logs.txt", true);
-                // Relanza la excepción original
                 throw new FileManagerException("Error al crear el directorio", ex);
             }
         }
@@ -49,9 +47,7 @@ namespace Entidades.Files
             }
             catch (Exception ex)
             {
-                // Utiliza el método Guardar para escribir en el archivo logs.txt
                 Guardar($"Error al guardar el archivo '{nombreArchivo}': {ex.Message}", "logs.txt", true);
-                // Relanza la excepción original
                 throw new FileManagerException($"Error al guardar el archivo '{nombreArchivo}'", ex);
             }
         }
@@ -67,9 +63,7 @@ namespace Entidades.Files
             }
             catch (Exception ex)
             {
-                // Utiliza el método Guardar para escribir en el archivo logs.txt
                 Guardar($"Error al serializar el archivo '{nombreArchivo}': {ex.Message}", "logs.txt", true);
-                // Relanza la excepción original
                 throw new FileManagerException($"Error al serializar el archivo '{nombreArchivo}'", ex);
             }
         }

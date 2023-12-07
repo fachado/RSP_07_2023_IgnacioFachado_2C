@@ -4,7 +4,7 @@ public static class IngredienteExtensions
 {
     public static double CalcularCostoIngrediente(this List<EIngrediente> ingredientes, int costoInicial)
     {
-        // Calcula el costo total de los ingredientes aplicando incrementos porcentuales
+       
         double costoTotal = costoInicial;
 
         foreach (var ingrediente in ingredientes)
@@ -23,17 +23,17 @@ public static class IngredienteExtensions
         switch (ingrediente)
         {
             case EIngrediente.QUESO:
-                return 5.0; // Incremento del 5% para el queso
+                return 5.0; 
             case EIngrediente.PANCETA:
-                return 8.0; // Incremento del 8% para la panceta
+                return 8.0; 
             case EIngrediente.ADHERESO:
-                return 3.0; // Incremento del 3% para el aderezo
+                return 3.0; 
             case EIngrediente.HUEVO:
-                return 6.0; // Incremento del 6% para el huevo
+                return 6.0; 
             case EIngrediente.JAMON:
-                return 4.0; // Incremento del 4% para el jamón
+                return 4.0; 
             default:
-                return 0.0; // Sin incremento para otros ingredientes
+                return 0.0; 
         }
     }
 }

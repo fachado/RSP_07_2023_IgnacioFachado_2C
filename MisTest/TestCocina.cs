@@ -27,9 +27,10 @@ namespace MisTest
         {
             //arrange
             Cocinero<Hamburguesa> PruebaPedidos;
-            PruebaPedidos = new Cocinero<Hamburguesa>("Nachito");
+
 
             //act
+            PruebaPedidos = new Cocinero<Hamburguesa>("Nachito");
             //assert
             Assert.AreEqual(PruebaPedidos.CantPedidosFinalizados, 0);
         }

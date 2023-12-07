@@ -11,7 +11,6 @@ namespace Entidades
 
         static DataBaseManager()
         {
-            // Inicializar el string de conexión en el constructor estático
             connectionString = "Server=.;Database=20230622SP;Trusted_Connection=True;";
         }
 
@@ -35,7 +34,6 @@ namespace Entidades
                     else
                     {
 
-                        // Lanzar excepción si no se encuentra el tipo de comida
                         throw new ComidaInvalidaException($"Tipo de comida '{tipo}' no encontrado en la base de datos.");
                     }
                 }
@@ -44,7 +42,6 @@ namespace Entidades
             {
                 FileManager.Guardar($"Error al leer datos de la base de datos: {ex.Message}", "logs.txt", true);
 
-                // Capturar y relanzar la excepción como DataBaseManagerException
                 throw new DataBaseManagerException($"Error al leer datos de la base de datos: {ex.Message}", ex);
             }
         }
@@ -71,22 +68,18 @@ namespace Entidades
             {
                 FileManager.Guardar($"Error al escribir datos en la base de datos: {ex.Message}", "logs.txt", true);
 
-                // Capturar y relanzar la excepción como DataBaseManagerException
                 throw new DataBaseManagerException($"Error al escribir datos en la base de datos: {ex.Message}", ex);
             }
         }
     }
 
-    // Interfaz para objetos comestibles
 
 
-    // Nueva excepción personalizada para tipos de comida no válidos
     public class ComidaInvalidaException : Exception
     {
         public ComidaInvalidaException(string message) : base(message) { }
     }
 
-    // Nueva excepción personalizada para manejar excepciones de DataBaseManager
     public class DataBaseManagerException : Exception
     {
         public DataBaseManagerException(string message, Exception innerException) : base(message, innerException) { }
