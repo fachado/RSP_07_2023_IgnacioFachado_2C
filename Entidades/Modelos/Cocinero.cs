@@ -3,64 +3,70 @@ using Entidades.Files;
 using Entidades.Interfaces;
 using System.ComponentModel.Design;
 using System.Threading;
-
+using Entidades.Modelos;
 namespace Entidades.Modelos
 {
 
-    public delegate void DelegadoNuevoIngreso(IComestible menu);
-    public delegate void DelegadoDemoraAtencion(double demora);
-
-
     public class Cocinero<T> where T : IComestible, new()
     {
-        public event DelegadoNuevoIngreso OnIngreso;
+        public delegate void DelegadoPedidoEnCurso(T pedido);
+        public delegate void DelegadoDemoraAtencion(double demora);
+
+        public event DelegadoPedidoEnCurso OnPedido;
         public event DelegadoDemoraAtencion OnDemora;
 
-        private int cantPedidosFinalizados;
-        private string nombre;
-        private double demoraPreparacionTotal;
         private CancellationTokenSource cancellation;
-        private T menu;
+        private int cantPedidosFinalizados;
+        private double demoraPreparacionTotal;
+        private Mozo<T> mozo;
+        private string nombre;
+        private T pedidoEnPreparacion;
+        private Queue<T> pedidos;
         private Task tarea;
-
-
 
         public Cocinero(string nombre)
         {
             this.nombre = nombre;
+            this.mozo = new Mozo<T>();
+            this.pedidos = new Queue<T>();
+            this.mozo.OnPedido += TomarNuevoPedido;
         }
 
-        //No hacer nada
         public bool HabilitarCocina
         {
             get
             {
                 return this.tarea is not null && (this.tarea.Status == TaskStatus.Running ||
-                    this.tarea.Status == TaskStatus.WaitingToRun ||
-                    this.tarea.Status == TaskStatus.WaitingForActivation);
+                                                  this.tarea.Status == TaskStatus.WaitingToRun ||
+                                                  this.tarea.Status == TaskStatus.WaitingForActivation);
             }
             set
             {
                 if (value && !this.HabilitarCocina)
                 {
                     this.cancellation = new CancellationTokenSource();
-                    this.IniciarIngreso();
+                    this.mozo.EmpezarATrabajar = true;
+                    this.EmpezarACocinar();
                 }
                 else
                 {
                     this.cancellation.Cancel();
+                    this.mozo.EmpezarATrabajar = false;
                 }
             }
         }
 
-        //no hacer nada
-        public double TiempoMedioDePreparacion { get => this.cantPedidosFinalizados == 0 ? 0 : this.demoraPreparacionTotal / this.cantPedidosFinalizados; }
-        public string Nombre { get => nombre; }
-        public int CantPedidosFinalizados { get => cantPedidosFinalizados; }
+        public double TiempoMedioDePreparacion
+        {
+            get => this.cantPedidosFinalizados == 0 ? 0 : this.demoraPreparacionTotal / this.cantPedidosFinalizados;
+        }
 
+        public string Nombre => nombre;
+        public int CantPedidosFinalizados => cantPedidosFinalizados;
 
+        public Queue<T> Pedidos => new Queue<T>(pedidos);
 
-        private void IniciarIngreso()
+        private void EmpezarACocinar()
         {
             tarea = Task.Run(async () =>
             {
@@ -68,71 +74,60 @@ namespace Entidades.Modelos
                 {
                     while (!cancellation.IsCancellationRequested)
                     {
-                        NotificarNuevoIngreso();
-                        EsperarProximoIngreso();
-                        cantPedidosFinalizados++;
-                        DataBaseManager.GuardarTicket(nombre, menu);
+                        if (pedidos.Count > 0)
+                        {
+                            pedidoEnPreparacion = pedidos.Dequeue();
+                            OnPedido.Invoke(pedidoEnPreparacion);
+                            await EsperarProximoIngreso();
+                            cantPedidosFinalizados++;
+                            DataBaseManager.GuardarTicket(nombre, pedidoEnPreparacion);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     FileManager.Guardar($"Error: {ex.Message}", "logs.txt", true);
-
                 }
             }, cancellation.Token);
         }
-        private void NotificarNuevoIngreso()
+
+        private async Task EsperarProximoIngreso()
         {
-            if (OnIngreso != null)
+            int tiempoEspera = 0;
+
+            try
             {
-                try
+                while (true)
                 {
-                    this.menu = new T();
+                    OnDemora?.Invoke(tiempoEspera);
 
-                    this.menu.IniciarPreparacion();
+                    if (pedidoEnPreparacion.Estado || cancellation.IsCancellationRequested)
+                    {
+                        break;
+                    }
 
-                    this.OnIngreso.Invoke(menu);
-                }
-                catch (Exception ex)
-                {
-                    FileManager.Guardar($"Error: {ex.Message}", "logs.txt", true);
+                    // Esperar 1 segundo antes de continuar
+                    await Task.Delay(1000);
 
+                    tiempoEspera++;
                 }
             }
-        }
-        private void EsperarProximoIngreso()
-        {
-            if (OnDemora != null)
+            catch (Exception ex)
             {
-                int tiempoEspera = 0;
+                FileManager.Guardar($"Error: {ex.Message}", "logs.txt", true);
+            }
+            finally
+            {
+                demoraPreparacionTotal += tiempoEspera;
+            }
+        }
 
-                try
-                {
-                    while (true)
-                    {
-                        OnDemora.Invoke(tiempoEspera);
-
-                        if (menu.Estado || cancellation.IsCancellationRequested)
-                        {
-                            break;
-                        }
-
-                        // Esperar 1 segundo antes de continuar
-                        Thread.Sleep(1000);
-
-                        tiempoEspera++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    FileManager.Guardar($"Error: {ex.Message}", "logs.txt", true);
-
-                }
-                finally
-                {
-                    demoraPreparacionTotal += tiempoEspera;
-                }
+        private void TomarNuevoPedido(T pedido)
+        {
+            if (OnPedido != null)
+            {
+                pedidos.Enqueue(pedido);
             }
         }
     }
- }
+}

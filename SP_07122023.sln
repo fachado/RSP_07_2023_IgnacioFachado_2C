@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Enti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrmView", "FrmView\FrmView.csproj", "{67C58F8C-42D3-4396-916F-31F3752DF5FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MisTest", "MisTest\MisTest.csproj", "{4B3DC31E-75FF-444A-BC19-9EC0D442B06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MisTest", "MisTest\MisTest.csproj", "{4B3DC31E-75FF-444A-BC19-9EC0D442B06D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

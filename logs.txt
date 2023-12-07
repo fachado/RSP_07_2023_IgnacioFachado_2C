@@ -1,2 +1,10 @@
 
 Error al guardar el archivo '"sarakatumba #!.T#$|."': El nombre de archivo, el nombre de directorio o la sintaxis de la etiqueta del volumen no son correctos. : 'C:\Users\ignac\OneDrive\Escritorio\SP_07122023_ALUMNO\"sarakatumba #!.T#$|."'
+Error: Cannot access a disposed object.
+Object name: 'FrmView'.
+Error: Se debe establecer ImageLocation.
+Error: Se debe establecer ImageLocation.
+Error: Se debe establecer ImageLocation.
+Error al serializar el archivo 'HamburgueseroSerializado.txt': Error getting value from 'Ticket' on 'Entidades.Modelos.Hamburguesa'.
+Error al serializar el archivo 'HamburgueseroSerializado.txt': Error getting value from 'Ticket' on 'Entidades.Modelos.Hamburguesa'.
+Error al serializar el archivo 'HamburgueseroSerializado.txt': Error getting value from 'Ticket' on 'Entidades.Modelos.Hamburguesa'.

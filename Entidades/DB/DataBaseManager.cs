@@ -11,6 +11,7 @@ namespace Entidades
 
         static DataBaseManager()
         {
+            // Inicializar el string de conexión en el constructor estático
             connectionString = "Server=.;Database=20230622SP;Trusted_Connection=True;";
         }
 
@@ -80,6 +81,7 @@ namespace Entidades
         public ComidaInvalidaException(string message) : base(message) { }
     }
 
+    // Nueva excepción personalizada para manejar excepciones de DataBaseManager
     public class DataBaseManagerException : Exception
     {
         public DataBaseManagerException(string message, Exception innerException) : base(message, innerException) { }

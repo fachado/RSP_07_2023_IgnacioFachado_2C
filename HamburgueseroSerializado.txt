@@ -1,1 +1,1 @@
-{"HabilitarCocina":false,"TiempoMedioDePreparacion":2.1666666666666665,"Nombre":"Ramon","CantPedidosFinalizados":6}
+{"HabilitarCocina":false,"TiempoMedioDePreparacion":3.2857142857142856,"Nombre":"Ramon","CantPedidosFinalizados":7,"Pedidos":[]}
