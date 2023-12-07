@@ -49,12 +49,12 @@ namespace Entidades.Modelos
 
         private void TomarPedidos()
         {
-            tarea = Task.Run(async () =>
+            tarea = Task.Run(() =>
             {
                 while (!cancellation.Token.IsCancellationRequested)
                 {
                     NotificarNuevoPedido();
-                    await Task.Delay(5000); // Espera 5 segundos antes de tomar otro pedido
+                    Thread.Sleep(5000); // Espera 5 segundos antes de tomar otro pedido
                 }
             }, cancellation.Token);
         }
@@ -63,9 +63,11 @@ namespace Entidades.Modelos
         {
             if (OnPedido != null)
             {
-                this.menu = new T();
-                this.menu.IniciarPreparacion();
-                OnPedido.Invoke(menu);
+                T nuevoMenu = new T(); 
+
+                nuevoMenu.IniciarPreparacion();
+ 
+                OnPedido.Invoke(nuevoMenu); 
             }
         }
     }

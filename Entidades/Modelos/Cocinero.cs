@@ -31,6 +31,9 @@ namespace Entidades.Modelos
             this.pedidos = new Queue<T>();
             this.mozo.OnPedido += TomarNuevoPedido;
         }
+        public string Nombre => nombre;
+        public int CantPedidosFinalizados => cantPedidosFinalizados;
+        public Queue<T> Pedidos => new Queue<T>(pedidos);
 
         public bool HabilitarCocina
         {
@@ -61,10 +64,8 @@ namespace Entidades.Modelos
             get => this.cantPedidosFinalizados == 0 ? 0 : this.demoraPreparacionTotal / this.cantPedidosFinalizados;
         }
 
-        public string Nombre => nombre;
-        public int CantPedidosFinalizados => cantPedidosFinalizados;
 
-        public Queue<T> Pedidos => new Queue<T>(pedidos);
+
 
         private void EmpezarACocinar()
         {
