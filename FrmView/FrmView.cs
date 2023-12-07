@@ -25,15 +25,16 @@ namespace FrmView
         //en el formulario los datos de la comida
         private void MostrarComida(IComestible comida)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action(() => MostrarComida(comida)));
-            }
-            else
+            if (! this.InvokeRequired)
             {
                 this.comidas.Enqueue(comida);
                 this.pcbComida.Load(comida.Imagen);
                 this.rchElaborando.Text = comida.ToString();
+                
+            }
+            else
+            {
+                this.Invoke(new Action(() => MostrarComida(comida)));
             }
 
         }
